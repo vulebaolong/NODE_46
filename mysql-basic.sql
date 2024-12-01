@@ -155,6 +155,88 @@ INSERT INTO orders (user_id, food_id) VALUES
 SELECT * FROM orders
 
 
+-- 1 - 1 (ONE - to - ONE)
+-- Mô tả: một hàng của bảng này chỉ liên kết tới một hàng của bảng khác
+
+-- 1 - n (ONE - to - MANY)
+-- Mô tả: một hàng của bảng A có thể liến kết tới nhiều hàng của bảng B
+
+-- n -n (MANY - to - MANY)
+-- Mô tả: một hàng của bảng A có thể liên kết tới nhiều hàng của bảng B và ngược lại
+
+
+-- INNER JOIN
+-- trả về kết quả giống nhau của 2 bảng
+SELECT *
+FROM orders
+INNER JOIN users ON orders.user_id = users.user_id
+
+
+-- LEFT JOIN - RIGHT JOIN
+-- trả về kết quả giống nhau của 2 bảng bao gồm tất cả dữ liệu bên bảng trái
+SELECT *
+FROM users
+LEFT JOIN orders ON orders.user_id = users.user_id
+
+SELECT *
+FROM orders
+RIGHT JOIN users ON orders.user_id = users.user_id
+
+-- CROSS JOIN
+SELECT * 
+FROM orders
+CROSS JOIN users
+
+-- GROUP BY: nhóm những hàng có cùng giá trị
+-- thường dùng kết hợp với SUM, COUNT, MAX, MIN
+SELECT users.user_id, users.email, users.full_name, SUM(users.user_id) AS 'Số lượng user'
+FROM orders
+INNER JOIN users ON orders.user_id = users.user_id
+GROUP BY users.user_id
+
+-- ORDER BY: sắp xếp từ lớn tới bé hoặc từ bé tới lớn
+-- Tăng dần: ASC
+-- Giảm dần: DESC
+SELECT users.user_id, users.email, users.full_name, SUM(users.user_id) AS 'Số lượng user'
+FROM orders
+INNER JOIN users ON orders.user_id = users.user_id
+GROUP BY users.user_id
+ORDER BY users.user_id DESC
+
+-- Tìm 5 người đã like nhà hàng nhiều nhất.
+SELECT COUNT(orders.user_id) AS 'Số lần mua', orders.user_id, users.user_id, users.full_name, users.email, users.pass_word
+FROM orders
+INNER JOIN users ON orders.user_id = users.user_id
+GROUP BY orders.user_id
+ORDER BY `Số lần mua` DESC
+LIMIT 5
+
+-- Tìm 2 nhà hàng có lượt like nhiều nhất.
+SELECT COUNT(orders.food_id) AS 'Số lần được mua', orders.food_id, foods.food_id, foods.food_name, foods.description
+FROM orders
+INNER JOIN foods ON orders.food_id = foods.food_id
+GROUP BY orders.food_id
+ORDER BY `Số lần được mua` DESC
+LIMIT 2
+
+-- Tìm người dùng không hoạt động trong hệ thống
+-- (không đặt hàng, không like, không đánh giá nhà
+-- hàng)
+
+
+SELECT users.full_name AS 'Những người chưa mua hàng'
+FROM orders
+RIGHT JOIN users ON orders.user_id = users.user_id
+WHERE orders.user_id IS NULL
+
+SELECT * 
+FROM orders
+RIGHT JOIN users ON orders.user_id = users.user_id
+RIGHT JOIN users ON like.user_id = users.user_id
+RIGHT JOIN users ON rate.user_id = users.user_id
+WHERE orders.user_id IS NULL AND like.user_id IS NULL AND rate.user_id IS NULL 
+
+
 
 
 

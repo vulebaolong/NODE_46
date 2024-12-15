@@ -1,13 +1,9 @@
 import express from 'express'
-import models from '../common/sequelize/init.sequelize.js';
+import videoController from '../controllers/video.controller.js';
 
 const videoRouter = express.Router()
 
-videoRouter.get('/video-list', async (req, res, next) => {
-   const videos = await models.videos.findAll({ raw: true });
- 
-    res.json(videos);
- })
+videoRouter.get('/video-list', videoController.videoList)
 
 
 export default videoRouter

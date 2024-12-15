@@ -12,8 +12,4 @@ rootRouter.get(`/`, (request, response, next) => {
 rootRouter.use('/video', videoRouter)
 rootRouter.use(`/car`, carRouter)
 
-// rootRouter.use('/car', carRouter)
-// rootRouter.use('/user', userRouter)
-// rootRouter.use('/role', roleRouter)
-
 export default rootRouter

@@ -1,23 +1,38 @@
 import express from "express";
-import { DataTypes, Sequelize } from "sequelize";
-import initModels from "./src/models/init-models.js";
 import rootRouter from "./src/routes/root.router.js";
+import { responseError } from "./src/common/helpers/reposonse.helper.js";
+import { handleError } from "./src/common/helpers/error.helper.js";
 
 const app = express();
 
 // middleware giúp phân giải dữ liệu từ json sang đối tượng javascript
 app.use(express.json());
 
-app.use(rootRouter)
+app.use(rootRouter);
 
+app.use(handleError);
 
+app.listen(3069, () => {
+   console.log(`Server Online At Port 3069`);
+});
 
-
-
-
-
-
-
+// app.use(
+//    (req, res, next) => {
+//       console.log(`middleware 1`);
+//       const payload = `payload`;
+//       res.payload = payload;
+//       next(123);
+//    },
+//    (req, res, next) => {
+//       console.log(`middleware 2`);
+//       console.log(res.payload);
+//       next();
+//    },
+//    (req, res, next) => {
+//       console.log(`middleware 3`);
+//       next();
+//    },
+// );
 
 /**
  * Code first
@@ -33,12 +48,6 @@ app.use(rootRouter)
  *
  *    - npx sequelize-auto -h localhost -d db_cyber_media -u root -x 1234 -p 3307  --dialect mysql -o src/models -a src/models/additional.json -l esm
  */
-
-app.listen(3069, () => {
-   console.log(`Server Online At Port 3069`);
-});
-
-
 // /**
 //  * Body
 //  * để nhận được dữ liệu từ body bắt buộc phải có

@@ -16,11 +16,12 @@ const carService = {
 
       // Lỗi không kiểm soát được
       // mã code: 500
-      abc
+      // abc
 
 
       // const cars = await sequelize.query(`SELECT * FROM cars`);
       const { page } = req.query;
+      
       console.log(+page);
 
       const cars = await Cars.findAll({ raw: true });

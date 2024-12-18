@@ -2,19 +2,47 @@ import express from "express";
 import rootRouter from "./src/routes/root.router.js";
 import { responseError } from "./src/common/helpers/reposonse.helper.js";
 import { handleError } from "./src/common/helpers/error.helper.js";
+import cors from 'cors'
 
 const app = express();
 
 // middleware giúp phân giải dữ liệu từ json sang đối tượng javascript
 app.use(express.json());
+app.use(cors({
+   origin: ['http://localhost:5173', 'google.com']
+}))
 
 app.use(rootRouter);
 
 app.use(handleError);
 
+
 app.listen(3069, () => {
    console.log(`Server Online At Port 3069`);
 });
+
+// console.log({ env: process.env });
+
+/**
+ * PRISMA
+ *    - npm i prisma
+ *    - npm i @prisma/client
+ *
+ *    - npx prisma init: khởi tạo prisma
+ *       - tạo ra .env
+ *       - tạo ra prisma/schema.prisma
+ *
+ *    - npx prisma db pull
+ *    - npx prisma generate
+ *
+ * *** Cập nhật lại DB
+ *    prisma: chỉ cần chạy 2 câu lệnh sau:
+ *       npx prisma db pull
+ *       npx prisma generate
+ *
+ *    sequelize:
+ *       npx sequelize-auto -h localhost -d db_cyber_media -u root -x 1234 -p 3307  --dialect mysql -o src/models -a src/models/additional.json -l esm
+ */
 
 // app.use(
 //    (req, res, next) => {

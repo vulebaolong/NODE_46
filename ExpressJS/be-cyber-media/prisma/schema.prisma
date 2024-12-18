@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model cars {
+  car_id              Int       @id @default(autoincrement())
+  name                String?   @db.VarChar(255)
+  description         String?   @db.Text
+  passengers          Int?
+  max_speed           String?   @db.VarChar(255)
+  gearbox_type        String?   @db.VarChar(255)
+  fuel_type           String?   @db.VarChar(255)
+  price_per_day       Float?
+  discount_percentage Int?      @default(0)
+  image_url           String?   @db.VarChar(255)
+  created_at          DateTime? @db.DateTime(0)
+  updated_at          DateTime? @db.DateTime(0)
+}
+
+model chats {
+  chat_id                              Int       @id @default(autoincrement())
+  message                              String?   @db.Text
+  user_id_sender                       Int
+  user_id_recipient                    Int
+  created_at                           DateTime? @default(now()) @db.Timestamp(0)
+  updated_at                           DateTime? @default(now()) @db.Timestamp(0)
+  users_chats_user_id_senderTousers    users     @relation("chats_user_id_senderTousers", fields: [user_id_sender], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "chats_ibfk_1")
+  users_chats_user_id_recipientTousers users     @relation("chats_user_id_recipientTousers", fields: [user_id_recipient], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "chats_ibfk_2")
+
+  @@index([user_id_recipient], map: "user_id_recipient")
+  @@index([user_id_sender], map: "user_id_sender")
+}
+
+model permissions {
+  permission_id    Int                @id @default(autoincrement())
+  name             String             @db.VarChar(255)
+  endpoint         String             @db.VarChar(255)
+  method           String             @db.VarChar(255)
+  module           String             @db.VarChar(255)
+  created_at       DateTime?          @default(now()) @db.Timestamp(0)
+  updated_at       DateTime?          @default(now()) @db.Timestamp(0)
+  role_permissions role_permissions[]
+}
+
+model role_permissions {
+  role_permissions_id Int         @id @default(autoincrement())
+  role_id             Int
+  permission_id       Int
+  is_deleted          Boolean     @default(false)
+  created_at          DateTime?   @default(now()) @db.Timestamp(0)
+  updated_at          DateTime?   @default(now()) @db.Timestamp(0)
+  roles               roles       @relation(fields: [role_id], references: [role_id], onDelete: NoAction, onUpdate: NoAction, map: "role_permissions_ibfk_1")
+  permissions         permissions @relation(fields: [permission_id], references: [permission_id], onDelete: NoAction, onUpdate: NoAction, map: "role_permissions_ibfk_2")
+
+  @@index([permission_id], map: "permission_id")
+  @@index([role_id], map: "role_id")
+}
+
+model roles {
+  role_id          Int                @id @default(autoincrement())
+  name             String?            @db.VarChar(255)
+  description      String?            @db.VarChar(255)
+  is_active        Boolean?
+  created_at       DateTime?          @default(now()) @db.Timestamp(0)
+  updated_at       DateTime?          @default(now()) @db.Timestamp(0)
+  role_permissions role_permissions[]
+}
+
+model users {
+  user_id                              Int       @id @default(autoincrement())
+  email                                String    @db.VarChar(255)
+  pass_word                            String?   @db.VarChar(255)
+  full_name                            String    @db.VarChar(255)
+  avatar                               String?   @db.VarChar(255)
+  goole_id                             String?   @db.VarChar(255)
+  face_app_id                          String?   @db.VarChar(255)
+  created_at                           DateTime? @default(now()) @db.Timestamp(0)
+  updated_at                           DateTime? @default(now()) @db.Timestamp(0)
+  chats_chats_user_id_senderTousers    chats[]   @relation("chats_user_id_senderTousers")
+  chats_chats_user_id_recipientTousers chats[]   @relation("chats_user_id_recipientTousers")
+}
+
+model video_type {
+  type_id    Int       @id @default(autoincrement())
+  type_name  String    @db.VarChar(255)
+  icon       String?   @db.VarChar(255)
+  created_at DateTime? @default(now()) @db.Timestamp(0)
+  updated_at DateTime? @default(now()) @db.Timestamp(0)
+}
+
+model videos {
+  video_id    Int       @id @default(autoincrement())
+  video_name  String?   @db.VarChar(255)
+  description String?   @db.Text
+  thumbnail   String?   @db.VarChar(255)
+  views       Int?      @default(0)
+  source      String?   @db.VarChar(255)
+  type_id     Int?
+  user_id     Int?
+  created_at  DateTime? @default(now()) @db.Timestamp(0)
+  updated_at  DateTime? @default(now()) @db.Timestamp(0)
+}

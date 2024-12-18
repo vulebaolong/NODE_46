@@ -1,7 +1,8 @@
 import { Sequelize } from "sequelize";
 import initModels from "../../models/init-models.js";
+import { DATABASE_URL } from "../constant/app.constant.js";
 
-export const sequelize = new Sequelize("mysql://root:1234@localhost:3307/db_cyber_media");
+export const sequelize = new Sequelize(DATABASE_URL, { logging: false });
 const models = initModels(sequelize);
 
 // Kiểm tra kết nối với cở sở dữ liệu (db)
@@ -21,4 +22,4 @@ sequelize
 //    console.log(`Kết nối với db KHÔNG thành công`);
 // }
 
-export default models
+export default models;

@@ -44,27 +44,27 @@ app.listen(3069, () => {
  *       npx sequelize-auto -h localhost -d db_cyber_media -u root -x 1234 -p 3307  --dialect mysql -o src/models -a src/models/additional.json -l esm
  */
 
-app.use(
-   (req, res, next) => {
-      console.log(`middleware 1`);
-      const payload = `payload`;
-      res.payload = payload;
-      next(123);
-   },
-   (req, res, next) => {
-      console.log(`middleware 2`);
-      console.log(res.payload);
-      next();
-   },
-   (req, res, next) => {
-      console.log(`middleware 3`);
-      next();
-   },
-   (err, req, res, next) => {
-      const resData = responseError(err.message, err.code, err.stack);
-      res.status(resData.code).json(resData);
-   }
-);
+// app.use(
+//    (req, res, next) => {
+//       console.log(`middleware 1`);
+//       const payload = `payload`;
+//       res.payload = payload;
+//       next(123);
+//    },
+//    (req, res, next) => {
+//       console.log(`middleware 2`);
+//       console.log(res.payload);
+//       next();
+//    },
+//    (req, res, next) => {
+//       console.log(`middleware 3`);
+//       next();
+//    },
+//    (err, req, res, next) => {
+//       const resData = responseError(err.message, err.code, err.stack);
+//       res.status(resData.code).json(resData);
+//    }
+// );
 
 /**
  * Code first

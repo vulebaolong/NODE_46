@@ -1,8 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-import { BadRequestException } from "../common/helpers/error.helper.js";
-import models from "../common/sequelize/init.sequelize.js";
-
-
+import prisma from "../common/prisma/init.prisma.js";
 
 const videoService = {
    videoList: async () => {

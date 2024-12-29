@@ -21,6 +21,22 @@ app.listen(3069, () => {
    console.log(`Server Online At Port 3069`);
 });
 
+
+/**
+ * tự động lưu token ở POSTMAN
+ 
+const response = pm.response.json()
+
+if(response.status === `error`) return
+
+const accessToken = response.metaData.accessToken
+const refreshToken = response.metaData.refreshToken
+
+pm.globals.set("accessToken", accessToken);
+pm.globals.set("refreshToken", refreshToken);
+
+ */
+
 // console.log({ env: process.env });
 
 /**

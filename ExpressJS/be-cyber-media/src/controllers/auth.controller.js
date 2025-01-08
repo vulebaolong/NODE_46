@@ -29,6 +29,16 @@ const authControler = {
          next(error)
       }
    },
+   refreshToken:  async (req, res, next) => {
+      try {
+         const data = await authService.refreshToken(req);
+         const resData = responseSuccess(data, `Refresh Token Successfully`, 200);
+         res.status(resData.code).json(resData);
+      } catch (error) {
+         console.log({error});
+         next(error)
+      }
+   },
 }
 
 export default authControler

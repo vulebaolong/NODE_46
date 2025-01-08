@@ -9,4 +9,6 @@ authRouter.post( `/login` , authControler.login)
 
 authRouter.post( `/facebook-login` , authControler.facebookLogin)
 
+authRouter.post(`/refresh-token`, authControler.refreshToken)
+
 export default authRouter;

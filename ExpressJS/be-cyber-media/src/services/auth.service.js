@@ -1,5 +1,5 @@
 import { ACCESS_TOKEN_EXPIRED, ACCESS_TOKEN_SECRET, REFRESH_TOKEN_EXPIRED, REFRESH_TOKEN_SECRET } from "../common/constant/app.constant.js";
-import { BadRequestException } from "../common/helpers/error.helper.js";
+import { BadRequestException, UnauthorizationException } from "../common/helpers/error.helper.js";
 import prisma from "../common/prisma/init.prisma.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -97,6 +97,47 @@ const authService = {
             },
          });
       }
+
+      const tokens = authService.createTokens(userExists.user_id);
+
+      return tokens;
+   },
+   refreshToken: async (req) => {
+      const refreshToken = req.headers.authorization?.split(" ")[1];
+      if (!refreshToken) {
+         throw new UnauthorizationException(`Vui lòng cung cấp token để tiếp tục sử dụng`);
+      }
+
+      const accessToken = req.headers[`x-access-token`];
+      if (!accessToken) {
+         throw new UnauthorizationException(`Vui lòng cung cấp token để tiếp tục sử dụng`);
+      }
+
+      console.log({
+         refreshToken,
+         accessToken,
+      });
+
+      const decodeRefeshToken = jwt.verify(refreshToken, REFRESH_TOKEN_SECRET);
+
+      const decodeAccessToken = jwt.verify(accessToken, ACCESS_TOKEN_SECRET, { ignoreExpiration: true });
+
+      console.log({
+         decodeRefeshToken,
+         decodeAccessToken,
+      });
+
+      if (decodeRefeshToken.userId !== decodeAccessToken.userId) {
+         throw new UnauthorizationException(`Cặp Token không hợp lệ`);
+      }
+
+      const userExists = await prisma.users.findUnique({
+         where: {
+            user_id: decodeRefeshToken.userId,
+         },
+      });
+
+      if (!userExists) throw new UnauthorizationException(`User không tồn tại`);
 
       const tokens = authService.createTokens(userExists.user_id);
 

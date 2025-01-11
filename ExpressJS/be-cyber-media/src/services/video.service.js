@@ -10,14 +10,14 @@ const videoService = {
 
       console.log({ page, pageSize, type_id, search });
 
-      // LIMIT 5 OFFSSET 5
-      const skip = (page - 1) * pageSize;
-      const totalItem = await prisma.videos.count();
-      const totalPage = Math.ceil(totalItem / pageSize);
-
       const whereTypeId = type_id === 0 ? {} : { type_id: type_id };
       const whereSearch = search.trim() === `` ? {} : { video_name: { contains: search } };
       const where = { ...whereTypeId, ...whereSearch };
+
+      // LIMIT 5 OFFSSET 5
+      const skip = (page - 1) * pageSize;
+      const totalItem = await prisma.videos.count({ where: where });
+      const totalPage = Math.ceil(totalItem / pageSize);
 
       const videos = await prisma.videos.findMany({
          take: pageSize,

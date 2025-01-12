@@ -51,7 +51,7 @@ model role_permissions {
   role_permissions_id Int         @id @default(autoincrement())
   role_id             Int
   permission_id       Int
-  is_deleted          Boolean     @default(false)
+  is_active           Boolean     @default(true)
   created_at          DateTime?   @default(now()) @db.Timestamp(0)
   updated_at          DateTime?   @default(now()) @db.Timestamp(0)
   roles               roles       @relation(fields: [role_id], references: [role_id], onDelete: NoAction, onUpdate: NoAction, map: "role_permissions_ibfk_1")
@@ -69,6 +69,7 @@ model roles {
   created_at       DateTime?          @default(now()) @db.Timestamp(0)
   updated_at       DateTime?          @default(now()) @db.Timestamp(0)
   role_permissions role_permissions[]
+  users            users[]
 }
 
 model users {
@@ -81,8 +82,12 @@ model users {
   face_app_id                          String?   @db.VarChar(255)
   created_at                           DateTime? @default(now()) @db.Timestamp(0)
   updated_at                           DateTime? @default(now()) @db.Timestamp(0)
+  role_id                              Int       @default(2)
   chats_chats_user_id_senderTousers    chats[]   @relation("chats_user_id_senderTousers")
   chats_chats_user_id_recipientTousers chats[]   @relation("chats_user_id_recipientTousers")
+  roles                                roles     @relation(fields: [role_id], references: [role_id], onDelete: NoAction, onUpdate: NoAction, map: "users_ibfk_1")
+
+  @@index([role_id], map: "role_id")
 }
 
 model video_type {

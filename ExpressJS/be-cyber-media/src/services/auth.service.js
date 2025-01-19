@@ -1,5 +1,6 @@
 import { ACCESS_TOKEN_EXPIRED, ACCESS_TOKEN_SECRET, REFRESH_TOKEN_EXPIRED, REFRESH_TOKEN_SECRET } from "../common/constant/app.constant.js";
 import { BadRequestException, UnauthorizationException } from "../common/helpers/error.helper.js";
+import sendMail from "../common/nodemailer/send-mail.nodemailer.js";
 import prisma from "../common/prisma/init.prisma.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -38,6 +39,13 @@ const authService = {
 
       // xoá password khi trả về
       delete userNew.pass_word;
+
+      // gửi email chào mừng
+      // 1 - tốc độ: đăng ký nhanh và không cần đợi quá trình xử lý email => bỏ await
+      // 2 - chắc chắn: đăng ký chậm và cần phải đợi email gửi thành công => await
+      sendMail(`vulebaolong@gmail.com`).catch((err) => {
+         console.log(`Lỗi gửi email: `, err);
+      });
 
       // Bước 4: trả kết quả thành công
       return userNew;

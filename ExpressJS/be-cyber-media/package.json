@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage --watchAll",
     "start": "nodemon --env-file=.env server.js"
   },
   "author": "",
@@ -12,10 +12,12 @@
   "description": "",
   "dependencies": {
     "@prisma/client": "^6.1.0",
+    "@types/jest": "^29.5.14",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.1",
+    "jest": "^29.7.0",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "mysql2": "^3.11.5",

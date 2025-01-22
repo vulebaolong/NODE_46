@@ -11,6 +11,15 @@ const videoController = {
          next(error);
       }
    },
+   videoDetail: async (req, res, next) => {
+      try {
+         const videos = await videoService.videoDetail(req);
+         const resData = responseSuccess(videos, `Get Detail Video Successfully`, 200);
+         res.status(resData.code).json(resData);
+      } catch (error) {
+         next(error);
+      }
+   },
 };
 
 export default videoController;

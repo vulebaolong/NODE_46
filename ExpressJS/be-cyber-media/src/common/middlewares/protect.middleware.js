@@ -14,6 +14,9 @@ export const protect = async (req, res, next) => {
          where: {
             user_id: decode.userId,
          },
+         include: {
+            roles: true
+         }
       });
 
       req.user = user;

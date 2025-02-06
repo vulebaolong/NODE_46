@@ -39,6 +39,16 @@ const authControler = {
          next(error)
       }
    },
+   getInfo:  async (req, res, next) => {
+      try {
+         const data = await authService.getInfo(req);
+         const resData = responseSuccess(data, `Get Info Successfully`, 200);
+         res.status(resData.code).json(resData);
+      } catch (error) {
+         console.log({error});
+         next(error)
+      }
+   },
 }
 
 export default authControler

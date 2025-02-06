@@ -1,10 +1,10 @@
 -- -------------------------------------------------------------
--- TablePlus 6.1.8(574)
+-- TablePlus 6.2.1(578)
 --
 -- https://tableplus.com/
 --
 -- Database: db_cyber_media
--- Generation Time: 2024-12-10 22:50:50.4060
+-- Generation Time: 2025-02-05 20:00:39.5440
 -- -------------------------------------------------------------
 
 
@@ -48,7 +48,7 @@ CREATE TABLE `chats` (
   KEY `user_id_recipient` (`user_id_recipient`),
   CONSTRAINT `chats_ibfk_1` FOREIGN KEY (`user_id_sender`) REFERENCES `users` (`user_id`),
   CONSTRAINT `chats_ibfk_2` FOREIGN KEY (`user_id_recipient`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 DROP TABLE IF EXISTS `permissions`;
 CREATE TABLE `permissions` (
@@ -60,14 +60,14 @@ CREATE TABLE `permissions` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`permission_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 DROP TABLE IF EXISTS `role_permissions`;
 CREATE TABLE `role_permissions` (
   `role_permissions_id` int NOT NULL AUTO_INCREMENT,
   `role_id` int NOT NULL,
   `permission_id` int NOT NULL,
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`role_permissions_id`),
@@ -75,7 +75,7 @@ CREATE TABLE `role_permissions` (
   KEY `permission_id` (`permission_id`),
   CONSTRAINT `role_permissions_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`),
   CONSTRAINT `role_permissions_ibfk_2` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`permission_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 DROP TABLE IF EXISTS `roles`;
 CREATE TABLE `roles` (
@@ -86,7 +86,7 @@ CREATE TABLE `roles` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
@@ -99,8 +99,11 @@ CREATE TABLE `users` (
   `face_app_id` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `role_id` int NOT NULL DEFAULT '2',
+  PRIMARY KEY (`user_id`),
+  KEY `role_id` (`role_id`),
+  CONSTRAINT `users_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 DROP TABLE IF EXISTS `video_type`;
 CREATE TABLE `video_type` (
@@ -159,8 +162,32 @@ INSERT INTO `cars` (`car_id`, `name`, `description`, `passengers`, `max_speed`, 
 (29, 'Ford F-150 Lightning', 'Electric version of classic truck', 5, '100 km/h in 4.5 seconds', 'Automatic gearbox', 'Electric', 250, 17, 'https://i.imgur.com/ZL52Q2D.png', NULL, NULL),
 (30, 'GMC Hummer EV', 'Electric off-road SUV', 5, '100 km/h in 3.5 seconds', 'Automatic gearbox', 'Electric', 350, 22, 'https://i.imgur.com/ZL52Q2D.png', NULL, NULL);
 
-INSERT INTO `users` (`user_id`, `email`, `pass_word`, `full_name`, `avatar`, `goole_id`, `face_app_id`, `created_at`, `updated_at`) VALUES
-(1, 'long@gmail.com', '1234', 'long', NULL, NULL, NULL, '2024-12-10 15:32:57', '2024-12-10 15:32:57');
+INSERT INTO `permissions` (`permission_id`, `name`, `endpoint`, `method`, `module`, `created_at`, `updated_at`) VALUES
+(1, 'READ VIDEO', '/video/video-list', 'GET', 'videos', '2025-01-12 02:13:54', '2025-01-12 02:13:54'),
+(2, 'CREATE VIDEO', '/video/video-create', 'GET', 'videos', '2025-01-12 02:13:54', '2025-01-12 02:13:54');
+
+INSERT INTO `role_permissions` (`role_permissions_id`, `role_id`, `permission_id`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 2, 1, 1, '2025-01-12 02:18:58', '2025-01-19 05:06:58'),
+(2, 2, 2, 1, '2025-01-12 02:25:00', '2025-01-12 02:25:00');
+
+INSERT INTO `roles` (`role_id`, `name`, `description`, `is_active`, `created_at`, `updated_at`) VALUES
+(1, 'ROLE_ADMIN', 'Quản trị (ông chùm)', 1, '2025-01-12 02:07:29', '2025-01-12 02:07:29'),
+(2, 'ROLE_USER', 'Người dùng hệ thống', 1, '2025-01-12 02:08:09', '2025-01-12 02:08:09');
+
+INSERT INTO `users` (`user_id`, `email`, `pass_word`, `full_name`, `avatar`, `goole_id`, `face_app_id`, `created_at`, `updated_at`, `role_id`) VALUES
+(1, 'long@gmail.com', '1234', 'long', NULL, NULL, NULL, '2024-12-10 15:32:57', '2024-12-10 15:32:57', 2),
+(2, 'long1@gmail.com', '1234', 'longlong', NULL, NULL, NULL, '2024-12-22 03:46:24', '2024-12-22 03:46:24', 2),
+(3, 'long2@gmail.com', '$2b$10$oak2ONhYia2ST7k3.J/gM.jZIHASqMv1JKFVk8PMUnhsoRmxelOB.', 'longlong', NULL, NULL, NULL, '2024-12-22 04:01:56', '2024-12-22 04:01:56', 2),
+(4, 'long3@gmail.com', '$2b$10$ZEmmuFCMA74c4exftnlBwO1EI9XGDqik7YGUu7C8E5gVUrtpU99km', 'longlong', NULL, NULL, NULL, '2024-12-22 04:10:22', '2024-12-22 04:10:22', 2),
+(5, 'long5@gmail.com', '$2b$10$rx9s0bNf6dSWPQiywYjSeOBE6UxcBYRi6JE27xkFx2/8FCay7VcRG', 'longlonglon', NULL, NULL, NULL, '2024-12-22 04:19:15', '2024-12-22 04:19:15', 2),
+(6, 'long6@gmail.com', '$2b$10$6Ayo8mdrEsCi/J9VcKyGUuGgXILSvhSw9.Uo.l.isXXJSlpN2kgqu', 'longlonglon', NULL, NULL, NULL, '2024-12-22 04:22:23', '2024-12-22 04:22:23', 2),
+(7, 'longbaolevu@gmail.com', NULL, 'Long Long', NULL, NULL, '618445073935959', '2024-12-29 03:18:22', '2024-12-29 03:18:22', 2),
+(10, 'long7@gmail.com', '$2b$10$7vn4sz7G2U2nXFKcmW9Dk.I9Fq59ik/u5ip7zu7c54XsFi58MP9w2', 'long7', NULL, NULL, NULL, '2025-01-19 03:58:44', '2025-01-19 03:58:44', 2),
+(11, 'long8@gmail.com', '$2b$10$P9/.pgIv.oeValVxprSEzO2hc9OyFwFzKZg5/aR1C0h2/HcITGWKm', 'long8', NULL, NULL, NULL, '2025-01-19 04:02:27', '2025-01-19 04:02:27', 2),
+(12, 'long9@gmail.com', '$2b$10$B591ZYb0JjxdsQsjb9lzNODStbLhPR1Lsuho9KK2zHJHGnRY9eV0a', 'long9', NULL, NULL, NULL, '2025-01-19 04:04:14', '2025-01-19 04:04:14', 2),
+(14, 'nguyenthitest@gmail.com', '$2b$10$0j0Ai.AIgiZ7OF38gT02ZOQ5rPmOskB2kDQU257SXlNqFp00UFwmu', 'nguyenthitest', NULL, NULL, NULL, '2025-01-22 14:22:37', '2025-01-22 14:22:37', 2),
+(15, 'long11@gmail.com', '$2b$10$adJxMJYygmhSGwJs.vTIM.pIPiwOPkxPLmz.TYF96LdnTlwVFwBSq', 'long11', NULL, NULL, NULL, '2025-02-05 12:35:41', '2025-02-05 12:35:41', 2),
+(16, 'long22@gmail.com', '$2b$10$H7j1KwAjHKzjav/z0OYWA.WZVpRVe4dKk0Xe3FSMhtghxt9OS2g8C', 'long22', NULL, NULL, NULL, '2025-02-05 12:35:51', '2025-02-05 12:35:51', 2);
 
 INSERT INTO `video_type` (`type_id`, `type_name`, `icon`, `created_at`, `updated_at`) VALUES
 (1, 'New', 'IconNews', '2024-12-07 17:16:22', '2024-12-07 17:16:22'),

@@ -1,3 +1,4 @@
+import multer from "multer";
 import { responseError } from "./reposonse.helper.js";
 import jwt from "jsonwebtoken";
 
@@ -12,6 +13,9 @@ export const handleError = (err, req, res, next) => {
    }
    if (err instanceof jwt.TokenExpiredError) {
       err.code = 403;
+   }
+   if (err instanceof multer.MulterError) {
+      err.code = 400;
    }
 
    const resData = responseError(err.message, err.code, err.stack);

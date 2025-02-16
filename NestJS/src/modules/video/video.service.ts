@@ -5,7 +5,8 @@ import { PrismaService } from '../prisma/prisma.service';
 export default class VideoService {
   constructor(public prisma: PrismaService) {}
 
-  async getListVideo(query: any) {
+  async getListVideo(req: any, query: any) {
+    console.log({ user: req.user });
     let { page, pageSize, type_id, search } = query;
     page = +page > 0 ? +page : 1;
     pageSize = +pageSize > 0 ? +pageSize : 10;

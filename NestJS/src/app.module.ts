@@ -10,6 +10,7 @@ import { join } from 'path';
 import { AuthModule } from './modules/auth/auth.module';
 import { VideoTypeModule } from './modules/video-type/video-type.module';
 import { CheckTokenStrategy } from './modules/auth/token/token-strategy';
+import { CheckPermissionStrategy } from './modules/auth/permission/permission-strategy';
 
 @Module({
   imports: [
@@ -26,6 +27,6 @@ import { CheckTokenStrategy } from './modules/auth/token/token-strategy';
     VideoTypeModule,
   ],
   controllers: [AppController],
-  providers: [AppService, CheckTokenStrategy],
+  providers: [AppService, CheckTokenStrategy, CheckPermissionStrategy],
 })
 export class AppModule {}

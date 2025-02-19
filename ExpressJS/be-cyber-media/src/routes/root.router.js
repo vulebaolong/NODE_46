@@ -12,7 +12,25 @@ import userRouter from "./user.router.js";
 const rootRouter = express.Router();
 
 rootRouter.use("/api-docs", swaggerUi.serve);
-rootRouter.get("/api-docs", swaggerUi.setup(swaggerDocument, { swaggerOptions: { persistAuthorization: true } }));
+rootRouter.get("/api-docs", (req, res) => {
+   const urlNew = `${req.protocol}://${req.get(`host`)}`;
+
+   console.log({ urlNew });
+
+   const isUrl = swaggerDocument.servers.find((item) => {
+      const isFind = item.url === urlNew;
+      return isFind;
+   });
+
+   if (!isUrl) {
+      swaggerDocument.servers.unshift({
+         url: urlNew,
+         description: "server đang online",
+      });
+   }
+
+   swaggerUi.setup(swaggerDocument, { swaggerOptions: { persistAuthorization: true } })(req, res);
+});
 
 rootRouter.get(`/`, (request, response, next) => {
    response.json(`ok`);

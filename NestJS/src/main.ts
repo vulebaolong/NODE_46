@@ -1,7 +1,9 @@
-import { NestFactory, Reflector } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { AppModule } from './app.module';
+import { ResponseSuccessInterceptor } from './common/interceptors/logging.interceptor';
+import { PermissionCheck } from './modules/auth/permission/permission-check';
 import { TokenCheck } from './modules/auth/token/token-check';
 
 async function bootstrap() {
@@ -11,6 +13,8 @@ async function bootstrap() {
   const reflector = app.get(Reflector);
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalGuards(new TokenCheck(reflector));
+  app.useGlobalGuards(new PermissionCheck(reflector));
+  app.useGlobalInterceptors(new ResponseSuccessInterceptor(reflector))
 
   // CORS
   app.enableCors({

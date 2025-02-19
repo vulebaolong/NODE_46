@@ -15,11 +15,13 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 import { TokenCheck } from '../auth/token/token-check';
 import { Request } from 'express';
 import { Public } from 'src/common/decorators/is-public.decorator';
+import { ResponseSuccess } from 'src/common/decorators/response-success.decorator';
 
 @Controller(`video`)
 export default class VideoController {
   constructor(protected videoService: VideoService) {}
 
+  @ResponseSuccess(`Lấy list video thành công 123`)
   @Get(`video-list`)
   @ApiBearerAuth()
   async getListVideo(

@@ -11,6 +11,8 @@ import { VideoTypeService } from './video-type.service';
 import { CreateVideoTypeDto } from './dto/create-video-type.dto';
 import { UpdateVideoTypeDto } from './dto/update-video-type.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { SkipPermission } from 'src/common/decorators/skip-permission.decorator';
+import { Public } from 'src/common/decorators/is-public.decorator';
 
 @ApiTags('VideoTypes')
 @Controller('video-type')
@@ -22,6 +24,7 @@ export class VideoTypeController {
     return await this.videoTypeService.create(createVideoTypeDto);
   }
 
+  @Public()
   @Get()
   findAll() {
     return this.videoTypeService.findAll();

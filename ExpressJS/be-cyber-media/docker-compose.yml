@@ -1,0 +1,21 @@
+services:
+   be-compose:
+      image: vulebaolong/image-be_cyber_media:latest
+      container_name: cons-be_cyber_media
+      ports:
+        - "3070:3069"
+      environment:
+        - DATABASE_URL=${DATABASE_URL}
+        - ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
+        - ACCESS_TOKEN_EXPIRED=${ACCESS_TOKEN_EXPIRED}
+        - REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET}
+        - REFRESH_TOKEN_EXPIRED=${REFRESH_TOKEN_EXPIRED}
+
+   mysql-compose:
+      image: mysql
+      container_name: const-mysql_cyber_media
+      ports: 
+        - "3307:3306"
+      environment:
+        - MYSQL_ROOT_PASSWORD=1234
+

@@ -1,0 +1,35 @@
+name: CD-DOCKER
+
+on:
+   workflow_run:
+      workflows: ["CI-DOCKER"]
+      types:
+         - completed
+
+jobs:
+   build:
+      runs-on: node_45
+
+      steps:
+         - name: Xoá File .env cũ
+           run: sudo rm -f .env
+
+         - name: Tạo File .env mới
+           run: |
+              echo "DATABASE_URL=${{secrets.DATABASE_URL}}" >> .env
+              echo "ACCESS_TOKEN_SECRET=${{secrets.ACCESS_TOKEN_SECRET}}" >> .env
+              echo "ACCESS_TOKEN_EXPIRED=${{secrets.ACCESS_TOKEN_EXPIRED}}" >> .env
+              echo "REFRESH_TOKEN_SECRET=${{secrets.REFRESH_TOKEN_SECRET}}" >> .env
+              echo "REFRESH_TOKEN_EXPIRED=${{secrets.REFRESH_TOKEN_EXPIRED}}" >> .env
+
+         - name: Dừng Container đang chạy
+           run: sudo docker container stop cons-be_cyber_media || true
+
+         - name: Xoá Container
+           run: sudo docker container remove cons-be_cyber_media || true
+
+         - name: Xoá Image Cũ
+           run: sudo docker image remove vulebaolong/image-be_cyber_media:latest || true
+
+         - name: Chạy Lại docker compose
+           run: sudo docker compose up -d

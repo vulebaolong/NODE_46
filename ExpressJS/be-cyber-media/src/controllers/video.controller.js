@@ -5,7 +5,7 @@ const videoController = {
    videoList: async (req, res, next) => {
       try {
          const videos = await videoService.videoList(req);
-         const resData = responseSuccess(videos, `Get List Videos Successfully`, 200);
+         const resData = responseSuccess(videos, `Get List Videos Successfully 123`, 200);
          res.status(resData.code).json(resData);
       } catch (error) {
          next(error);
@@ -23,3 +23,4 @@ const videoController = {
 };
 
 export default videoController;
+

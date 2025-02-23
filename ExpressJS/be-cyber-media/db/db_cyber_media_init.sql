@@ -4,7 +4,7 @@
 -- https://tableplus.com/
 --
 -- Database: db_cyber_media
--- Generation Time: 2025-02-11 22:41:06.0030
+-- Generation Time: 2025-02-23 10:19:13.4280
 -- -------------------------------------------------------------
 
 
@@ -113,7 +113,7 @@ CREATE TABLE `video_type` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 DROP TABLE IF EXISTS `videos`;
 CREATE TABLE `videos` (
@@ -128,7 +128,7 @@ CREATE TABLE `videos` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`video_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 INSERT INTO `cars` (`car_id`, `name`, `description`, `passengers`, `max_speed`, `gearbox_type`, `fuel_type`, `price_per_day`, `discount_percentage`, `image_url`, `created_at`, `updated_at`) VALUES
 (1, 'Tesla Model S', 'Free recharge at any station', 4, '100 km/h in 4 seconds', 'Automatic gearbox', 'Electric', 168, 25, 'https://i.imgur.com/ZL52Q2D.png', NULL, NULL),
@@ -185,7 +185,7 @@ INSERT INTO `roles` (`role_id`, `name`, `description`, `is_active`, `created_at`
 (2, 'ROLE_USER', 'Người dùng hệ thống', 1, '2025-01-12 02:08:09', '2025-01-12 02:08:09');
 
 INSERT INTO `users` (`user_id`, `email`, `pass_word`, `full_name`, `avatar`, `goole_id`, `face_app_id`, `created_at`, `updated_at`, `role_id`) VALUES
-(1, 'long@gmail.com', '1234', 'long', NULL, NULL, NULL, '2024-12-10 15:32:57', '2024-12-10 15:32:57', 2),
+(1, 'long@gmail.com', '1234', 'long', 'https://res.cloudinary.com/vulebaolong/image/upload/v1739298868/images/jm4u1v0zw1ame2hdthm4.webp', NULL, NULL, '2024-12-10 15:32:57', '2025-02-11 18:34:28', 2),
 (2, 'long1@gmail.com', '1234', 'longlong', NULL, NULL, NULL, '2024-12-22 03:46:24', '2024-12-22 03:46:24', 2),
 (3, 'long2@gmail.com', '$2b$10$oak2ONhYia2ST7k3.J/gM.jZIHASqMv1JKFVk8PMUnhsoRmxelOB.', 'longlong', NULL, NULL, NULL, '2024-12-22 04:01:56', '2024-12-22 04:01:56', 2),
 (4, 'long3@gmail.com', '$2b$10$ZEmmuFCMA74c4exftnlBwO1EI9XGDqik7YGUu7C8E5gVUrtpU99km', 'longlong', 'local-avatar-1739077268809-640061063.png', NULL, NULL, '2024-12-22 04:10:22', '2025-02-09 05:01:08', 2),
@@ -209,7 +209,9 @@ INSERT INTO `video_type` (`type_id`, `type_name`, `icon`, `created_at`, `updated
 (6, 'Sport', 'IconBallBaseball', '2024-12-07 17:16:22', '2024-12-07 17:16:22'),
 (7, 'Fashion', 'IconShirt', '2024-12-07 17:16:22', '2024-12-07 17:16:22'),
 (8, 'Gym', 'IconUmbrella', '2024-12-07 17:16:22', '2024-12-07 17:16:22'),
-(9, 'Crypto', 'IconDiamond', '2024-12-07 17:16:22', '2024-12-07 17:16:22');
+(9, 'Crypto', 'IconDiamond', '2024-12-07 17:16:22', '2024-12-07 17:16:22'),
+(10, 'hello typename', NULL, '2025-02-16 02:57:07', '2025-02-16 02:57:07'),
+(11, 'string hello typeName', NULL, '2025-02-16 03:12:42', '2025-02-16 03:12:42');
 
 INSERT INTO `videos` (`video_id`, `video_name`, `description`, `thumbnail`, `views`, `source`, `type_id`, `user_id`, `created_at`, `updated_at`) VALUES
 (1, 'SƠN TÙNG M-TP | ĐỪNG LÀM TRÁI TIM ANH ĐAU | OFFICIAL TEASER', 'Lorem ipsum dolor sit amet consectetur adipisicing elit.', 'https://img.youtube.com/vi/CQXQKr_3vKE/maxresdefault.jpg', 1500, 'https://www.youtube.com/watch?v=CQXQKr_3vKE', 2, 1, '2024-10-07 07:08:26', '2024-10-07 08:00:00'),
@@ -228,7 +230,8 @@ INSERT INTO `videos` (`video_id`, `video_name`, `description`, `thumbnail`, `vie
 (14, 'SON TUNG M-TP | MAKING MY WAY | OFFICIAL VISUALIZER', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. ', 'https://img.youtube.com/vi/niPkap1ozUA/maxresdefault.jpg', 120, 'https://www.youtube.com/watch?v=niPkap1ozUA', 1, 6, '2024-10-21 16:30:00', '2024-10-21 17:00:00'),
 (15, 'SƠN TÙNG M-TP | THERES NO ONE AT ALL (ANOTHER VERSION) | OFFICIAL MUSIC VIDEO', 'Lorem ipsum dolor sit amet consectetur adipisicing elit.', 'https://img.youtube.com/vi/JHSRTU31T14/maxresdefault.jpg', 1000, 'https://www.youtube.com/watch?v=JHSRTU31T14', 1, 4, '2024-10-22 10:10:10', '2024-10-22 11:30:45'),
 (16, 'SƠN TÙNG M-TP | LẠC TRÔI MOVINGTOON | KÝ HỢP ĐỒNG | OFFICIAL EPISODE 32', 'Lorem ipsum dolor sit amet consectetur adipisicing elit.', 'https://img.youtube.com/vi/MaI7JCybK3s/maxresdefault.jpg', 999, 'https://www.youtube.com/watch?v=MaI7JCybK3s', 1, 6, '2024-10-24 08:45:30', '2024-10-24 10:15:00'),
-(17, 'Bản tình ca của Đá - [Official Audio] - HwangCho - Đường anh đi toàn ke với đá…', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. ', 'https://img.youtube.com/vi/ZyYmIiYEK7I/maxresdefault.jpg', 1500, 'https://www.youtube.com/watch?v=ZyYmIiYEK7I', 1, 6, '2024-10-25 18:00:00', '2024-10-25 19:00:00');
+(17, 'Bản tình ca của Đá - [Official Audio] - HwangCho - Đường anh đi toàn ke với đá…', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. ', 'https://img.youtube.com/vi/ZyYmIiYEK7I/maxresdefault.jpg', 1500, 'https://www.youtube.com/watch?v=ZyYmIiYEK7I', 1, 6, '2024-10-25 18:00:00', '2024-10-25 19:00:00'),
+(18, 'Long long longBản tình ca của Đá - [Official Audio] - HwangCho - Đường anh đi toàn ke với đá…', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. ', 'https://img.youtube.com/vi/ZyYmIiYEK7I/maxresdefault.jpg', 1500, 'https://www.youtube.com/watch?v=ZyYmIiYEK7I', 1, 6, '2025-02-11 17:50:01', '2025-02-11 17:50:01');
 
 
 
